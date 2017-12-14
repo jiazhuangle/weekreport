@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>周报管理系统</title>
+    <link rel="stylesheet" href="../static/css/open_sans.css" th:href="@{/css/open_sans.css}"/>
+    <!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"/>
+    <!-- Bootstrap style -->
+    <link rel="stylesheet" href="../static/css/magnific-popup.css" th:href="@{/css/magnific-popup.css}"/>
+    <!-- Magnific pop up style, http://dimsemenov.com/plugins/magnific-popup/ -->
+    <link rel="stylesheet" href="../static/css/templatemo-style.css" th:href="@{/css/templatemo-style.css}"/>
+    <!--<link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}"/>-->
+    <link rel="stylesheet" href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}"/>
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}"/>
+
+    <!-- Templatemo style -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="../static/js/html5shiv.min.js"></script>
+    <script src="../static/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body ng-app="app" ng-controller="MainController">
+<div class="container">
+    <div class="row">
+        <div class="tm-left-right-container">
+            <!-- Left column: logo and menu -->
+            <div class="tm-blue-bg tm-left-column">
+                <div class="tm-logo-div text-xs-center">
+                    <img src="img/tm-neaty-logo.png" alt="Logo"/>
+                    <h1 class="tm-site-name">周报管理系统</h1>
+                </div>
+                <nav class="tm-main-nav">
+                    <ul class="tm-main-nav-ul">
+                        <li class="tm-nav-item">
+                            <a href="#welcome" class="tm-nav-item-link">Welcome</a>
+                        </li>
+                        <li class="tm-nav-item">
+                            <a href="#writereport" class="tm-nav-item-link">写周报</a>
+                        </li>
+                        <li class="tm-nav-item">
+                            <a href="#thisweek" class="tm-nav-item-link">本周周报汇总</a>
+                        </li>
+                        <li class="tm-nav-item">
+                            <a href="#lastweek" class="tm-nav-item-link">上周周报回顾</a>
+                        </li>
+                        <li class="tm-nav-item">
+                            <a href="#history" class="tm-nav-item-link">历史数据查询</a>
+                        </li>
+                        <li class="tm-nav-item">
+                            <a href="#contact" class="tm-nav-item-link">统计信息</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div> <!-- Left column: logo and menu -->
+
+
+            <!-- Right column: content -->
+            <div class="tm-right-column">
+                <figure>
+                    <img src="img/neaty-01.jpg" alt="Header image" class="img-fluid img-responsive center-block"/>
+                </figure>
+
+                <div class="tm-content-div">
+                    <!-- Welcome section -->
+                    <section id="welcome" class="tm-section">
+                        <header>
+                            <h2 class="tm-blue-text tm-welcome-title tm-margin-b-45">happy weekend!</h2>
+                        </header>
+                        <p><strong>每周五要记得写周报!</strong></p>
+                    </section>
+                    <!-- writereport section -->
+                    <section id="writereport" class="tm-section">
+                        <header><h2 class="tm-blue-text tm-section-title tm-margin-b-30">写周报</h2></header>
+                        <div class="row">
+                            <form name="reportfrom" class="contact-form">
+                                <div class="col-lg-6">
+
+                                    <input id="id" ng-model="data.id" type="hidden"/>
+                                    <div class="form-group">
+                                        <input type="text" id="mission" name="mission" class="form-control"
+                                               placeholder="工作项目/任务(必填)" ng-model="data.mission"
+                                               uib-typeahead=" n for n in getMissions($viewValue)" required="required"/>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="leader" class="form-control" placeholder="负责人(必填)"
+                                               ng-model="data.leader" uib-typeahead=" n for n in getNames($viewValue)"
+                                               required="required"/>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="missionFrom" name="missionFrom" class="form-control"
+                                               placeholder="任务来源" ng-model="data.missionFrom"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="goals" name="goals" class="form-control" rows="2"
+                                                  placeholder="本周工作目标(必填)" ng-model="data.goals"
+                                                  required="required"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input id="missionBegin" name="missionBegin" class="form-control"
+                                                   placeholder="开始时间(必填)" ng-model="data.missionBegin"
+                                                   uib-datepicker-popup="yyyy-MM-dd" is-open="popupBegin.opened"
+                                                   close-text="关闭"
+                                                   clear-text="清空" current-text="今天" alt-input-formats="yyyy-MM-dd"
+                                                   required="required"></input>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openBegin()"><i
+                                                        class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input id="missionEnd" name="missionEnd" class="form-control"
+                                                   placeholder="结束时间(必填)" ng-model="data.missionEnd"
+                                                   uib-datepicker-popup="yyyy-MM-dd" is-open="popupEnd.opened"
+                                                   close-text="关闭"
+                                                   clear-text="清空" current-text="今天" alt-input-formats="yyyy-MM-dd"
+                                                   required="required"></input>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openEnd()"><i
+                                                        class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <textarea id="execution" name="execution" class="form-control"
+                                                  placeholder="实际完成情况(必填)" ng-model="data.execution" required="required"
+                                        ></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="highlight" name="highlight" class="form-control" placeholder="亮点"
+                                               ng-model="data.highlight"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="problems" name="problems" class="form-control" placeholder="存在问题"
+                                               ng-model="data.problems"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="remark" name="remark" class="form-control" placeholder="备注"
+                                               ng-model="data.remark"></input>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-6 tm-contact-right">
+
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><span class="tm-blue-text">工作任务: </span>{{data.mission}}
+                                        </li>
+                                        <li class="list-group-item"><span class="tm-blue-text">负责人: </span>{{data.leader}}
+                                        </li>
+                                        <li class="list-group-item"><span class="tm-blue-text">任务来源: </span>{{data.missionFrom}}
+                                        </li>
+                                        <li class="list-group-item"><span class="tm-blue-text">工作目标: </span>{{data.goals}}
+                                        </li>
+                                        <li class="list-group-item"><span class="tm-blue-text">开始时间: </span>{{data.missionBegin
+                                            |date:'yyyy-MM-dd'}}
+                                        </li>
+                                        <li class="list-group-item"><span class="tm-blue-text">结束时间: </span>{{data.missionEnd|date:'yyyy-MM-dd'}}
+                                        </li>
+                                        <li class="list-group-item"><span class="tm-blue-text">实际完成情况: </span>{{data.execution}}
+                                        </li>
+                                        <li class="list-group-item"><span class="tm-blue-text">亮点: </span>{{data.highlight}}
+                                        </li>
+                                        <li class="list-group-item"><span class="tm-blue-text">存在问题: </span>{{data.problems}}
+                                        </li>
+                                        <li class="list-group-item"><span class="tm-blue-text">备注: </span>{{data.remark}}
+                                        </li>
+                                    </ul>
+                                    <input type="button" class="float-right tm-button" ng-click="save()"
+                                           ng-disabled="reportfrom.$invalid" value="保存"/>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+
+                    <!-- this week section -->
+                    <section id="thisweek" class="tm-section">
+                        <div class="pull-left"><header><h2 class="tm-blue-text tm-section-title tm-margin-b-30">本周周报列表</h2></header></div>
+                        <div class="pull-right"><a th:href="@{/export}" target="_self">导出</a></div>
+
+                        <div class="row">
+                            <table class="table table-striped" ng-show="thisweekshow.isShow">
+                                <thead>
+                                <tr>
+                                    <td>编号</td>
+                                    <td class="col-md-1">工作项目</td>
+
+                                    <td  >姓名</td>
+                                    <td class="col-md-3">本周工作目标</td>
+                                    <td>开始时间</td>
+                                    <td>完成时间</td>
+                                    <td class="col-md-3">实际完成情况</td>
+                                    <td>亮点</td>
+                                    <td>问题点</td>
+                                    <td>备注</td>
+                                    <td>来源</td>
+                                    <td>操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="row in rows">
+                                    <td>{{row.id}}</td>
+                                    <td>{{row.mission}}</td>
+
+                                    <td>{{row.leader}}</td>
+                                    <td>{{row.goals}}</td>
+                                    <td>{{row.missionBegin}}</td>
+                                    <td>{{row.missionEnd}}</td>
+                                    <td>{{row.execution}}</td>
+                                    <td>{{row.highlight}}</td>
+                                    <td>{{row.problems}}</td>
+                                    <td>{{row.remark}}</td>
+                                    <td>{{row.missionFrom}}</td>
+                                    <td>
+                                        <input ng-click="edit(row.id)" value="编辑" class="btn btn-info" type="button"/>
+                                        <input ng-click="del(row.id)" value="删除" class="btn btn-warning" type="button"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- last week section -->
+                    <section id="lastweek" class="tm-section">
+                        <header><h2 class="tm-blue-text tm-section-title tm-margin-b-30">上周周报回顾</h2></header>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <td>编号</td>
+                                <td class="col-md-1">工作项目</td>
+
+                                <td  >姓名</td>
+                                <td class="col-md-3">本周工作目标</td>
+                                <td>开始时间</td>
+                                <td>完成时间</td>
+                                <td class="col-md-3">实际完成情况</td>
+                                <td>亮点</td>
+                                <td>问题点</td>
+                                <td>备注</td>
+                                <td>任务来源</td>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!--/* @thymesVar id="lastweek" type="com.os.workreport.dao.WorkReport"*/-->
+                            <tr th:each="work :${lastweek}">
+                                <td th:text="${work.getId()}"></td>
+                                <td th:text="${work.getMission()}"></td>
+
+                                <td th:text="${work.getLeader()}"></td>
+                                <td th:text="${work.getGoals()}"></td>
+                                <td th:text="${work.getMissionBegin()}"></td>
+                                <td th:text="${work.getMissionEnd()}"></td>
+                                <td th:text="${work.getExecution()}"></td>
+                                <td th:text="${work.getHighlight()}"></td>
+                                <td th:text="${work.getProblems()}"></td>
+                                <td th:text="${work.getRemark()}"></td>
+                                <td th:text="${work.getMissionFrom()}"></td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </section>
+
+                    <!-- query section -->
+                    <section id="history" class="tm-section">
+                        <header><h2 class="tm-blue-text tm-section-title tm-margin-b-30">历史周报查询</h2></header>
+                        <div class="row">
+                            <form class="contact-form">
+                                <div class="form-group col-md-3">
+                                    <input id="person" name="person" class="form-control" placeholder="人员姓名"
+                                           ng-model="query.leader"></input>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <input id="begin_date" name="begin_date" class="form-control"
+                                           placeholder="开始时间 yyyy-MM-dd" ng-model="query.missionBegin"></input>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <input id="end_date" name="end_date" class="form-control"
+                                           placeholder="结束时间 yyyy-MM-dd" ng-model="query.missionEnd"></input>
+                                </div>
+                                <input type="button" class="float-right btn btn-success col-md-1"
+                                       ng-click="queryreport()"
+                                       value="查询"/>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <table class="table table-striped" ng-show="querytableshow.isShow">
+                                <thead>
+                                <tr>
+                                    <td>编号</td>
+                                    <td class="col-md-1">工作项目</td>
+
+                                    <td  >姓名</td>
+                                    <td class="col-md-3">本周工作目标</td>
+                                    <td>开始时间</td>
+                                    <td>完成时间</td>
+                                    <td class="col-md-3">实际完成情况</td>
+                                    <td>亮点</td>
+                                    <td>问题点</td>
+                                    <td>备注</td>
+                                    <td>来源</td>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="result in queryResult">
+                                    <td>{{result.id}}</td>
+                                    <td>{{result.mission}}</td>
+
+                                    <td>{{result.leader}}</td>
+                                    <td>{{result.goals}}</td>
+                                    <td>{{result.missionBegin}}</td>
+                                    <td>{{result.missionEnd}}</td>
+                                    <td>{{result.execution}}</td>
+                                    <td>{{result.highlight}}</td>
+                                    <td>{{result.problems}}</td>
+                                    <td>{{result.remark}}</td>
+                                    <td>{{result.missionFrom}}</td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Contact  section -->
+                    <section id="contact" class="tm-section">
+                        <header><h2 class="tm-blue-text tm-section-title tm-margin-b-30">统计信息</h2></header>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <p>诚征志愿者完成</p>
+                            </div>
+
+                            <div class="col-lg-6 tm-contact-right">
+                                <p>
+                                    历史统计查询、统计信息等都没有做。
+                                </p>
+                                <address>
+                                    有想做的欢迎与我联系。
+                                </address>
+                            </div>
+                        </div>
+
+                    </section>
+                    <footer>
+                        <p class="tm-copyright-p">Copyright &copy; <span class="tm-current-year">2017</span> 卓越工程部</p>
+                    </footer>
+                </div>
+
+            </div> <!-- Right column: content -->
+        </div>
+    </div> <!-- row -->
+
+    <div class="cart-tab visible">
+        <a href="#" title="观看你的个人信息统计" class="cart-link">
+            <span class="amount">本周排行榜</span>
+        </a>
+        <div class="cart">
+            <h3>提交排行榜</h3>
+            <div class="cart-items">
+
+                    <!--<li class="clearfix">-->
+
+                        <!--<h4>严重缺陷</h4>-->
+                        <!--<span class="item-price">10%</span>-->
+                        <!--<span class="quantity">数量: 1</span>-->
+                    <!--</li>-->
+
+
+                <ul >
+                    <li class="clearfix" th:each="item,itemStat:${order}">
+                        <div th:if="${itemStat.count eq 1}">
+
+                            <h4><span  th:text="|第 ${itemStat.count} 名|" th:remove="tag"></span><i class="fa fa-birthday-cake" aria-hidden="true"></i> </h4>
+                            <span class="quantity" th:text="|${item.getLeader()}|"> </span>
+
+                        </div>
+                        <div th:if="${itemStat.count ne 1}">
+                            <h4 th:text="|第 ${itemStat.count} 名|"></h4>
+                            <span class="quantity" th:text="${item.getLeader()}"></span>
+                        </div>
+
+                    </li>
+                </ul>
+            </div><!-- @end .cart-items -->
+
+        </div><!-- @end .cart -->
+    </div><!-- @end .cart-tab -->
+
+</div> <!-- container -->
+
+
+<script src="../static/js/jquery-2.1.1.min.js" th:src="@{/js/jquery-2.1.1.min.js}"></script>
+<script src="../static/js/jquery.magnific-popup.min.js" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script src="../static/js/jquery.singlePageNav.min.js" th:src="@{/js/jquery.singlePageNav.min.js}"></script>
+<script src="../static/js/angularjs.min.js" th:src="@{/js/angularjs.min.js}"></script>
+<script src="../static/js/ui-bootstrap-tpls.min.js" th:src="@{/js/ui-bootstrap-tpls.min.js}"></script>
+<script src="../static/js/angular-locale_zh.js" th:src="@{/js/angular-locale_zh.js}"></script>
+<script src="../static/js/bootstrap-notify.min.js" th:src="@{/js/bootstrap-notify.min.js}"></script>
+<script src="../static/js/index.js" th:src="@{/js/index.js}"></script>
+
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+
+        // Single page nav
+        $('.tm-main-nav').singlePageNav({
+            'currentClass': "active",
+            offset: 20
+        });
+
+        $('.tm-current-year').text(new Date().getFullYear());
+
+    });
+    /*]]>*/
+</script>
+</body>
+</html>
